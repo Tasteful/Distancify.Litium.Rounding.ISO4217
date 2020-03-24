@@ -1,0 +1,65 @@
+
+trigger:
+  tags:
+    include:
+    - v*
+  branches:
+    include:
+    - master
+    - features/*
+
+pool: 'Default'
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+steps:
+- task: NuGetToolInstaller@0
+  displayName: 'Use NuGet 4.9.1'
+  inputs:
+    versionSpec: 4.9.1
+
+- task: NuGetCommand@2
+  displayName: 'Restore NuGet packages'
+  inputs:
+    restoreSolution: '$(solution)'
+    feedsToUse: config
+    nugetConfigPath: NuGet.config
+    externalFeedCredentials: Litium
+
+- task: PowerShell@2
+  displayName: 'SetBuildVariables.ps1'
+  inputs:
+    targetType: 'filePath'
+    filePath: 'SetBuildVariables.ps1'
+
+- task: VSBuild@1
+  displayName: 'Build solution'
+  inputs:
+    solution: '$(solution)'
+    msbuildArgs: '/p:SkipInvalidConfigurations=true /p:GeneratePackageOnBuild="false" /p:Version="$(packageVersion)" /p:FileVersion="$(fileVersion)" /p:AssemblyVersion="$(fileVersion)"'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+- task: VSTest@2
+  displayName: 'Run Tests'
+  inputs:
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Create NuGet package'
+  inputs:
+    command: 'pack'
+    packagesToPack: '**/Distancify.Litium.Rounding.ISO4217.csproj'
+    nobuild: true
+    versioningScheme: 'off'
+
+- task: NuGetCommand@2
+  displayName: 'Push to internal NuGet feed'
+  inputs:
+    command: push
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    publishVstsFeed: '417e6578-98ed-497d-b969-19ea06b1870e'
