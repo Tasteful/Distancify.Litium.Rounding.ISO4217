@@ -262,18 +262,22 @@ namespace Distancify.Litium.Rounding.ISO4217.Tests
             order.PaymentInfo.Add(paymentInfo);
             order.OrderRows.Add(new OrderRowCarrier
             {
+                UnitListPrice = 10m,
+                Quantity = 1,
                 TotalPrice = 10m,
-                TotalVATAmount = 2.5m
+                TotalVATAmount = 2.5m,
             });
             order.Fees.Add(new FeeCarrier
             {
                 TotalAmount = 10m,
-                TotalVATAmount = 2.5m
+                TotalVATAmount = 2.5m,
+                VATPercentage = 0.25m
             });
             order.Deliveries.Add(new DeliveryCarrier
             {
                 TotalDeliveryCost = 10m,
-                TotalVATAmount = 2.5m
+                TotalVATAmount = 2.5m,
+                VATPercentage = 0.25m
             });
             order.OrderDiscounts.Add(new OrderDiscountCarrier
             {
