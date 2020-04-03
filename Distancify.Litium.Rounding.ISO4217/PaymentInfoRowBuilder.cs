@@ -29,24 +29,24 @@ namespace Distancify.Litium.Rounding.ISO4217
         public static PaymentInfoRowCarrier Build(DeliveryCarrier delivery, string description, Guid paymentInfoID, int index)
         {
             var result = new PaymentInfoRowCarrier(delivery, description, paymentInfoID, index);
-            result.TotalPrice = Math.Abs(delivery.TotalDeliveryCost);
-            result.TotalVatAmount = Math.Abs(delivery.TotalVATAmount);
+            result.TotalPrice = result.TotalPriceWithoutRounding = Math.Abs(delivery.TotalDeliveryCost);
+            result.TotalVatAmount = result.TotalVatAmountWithoutRounding = Math.Abs(delivery.TotalVATAmount);
             return result;
         }
 
         public static PaymentInfoRowCarrier Build(FeeCarrier fee, Guid paymentInfoID, int index)
         {
             var result = new PaymentInfoRowCarrier(fee, paymentInfoID, index);
-            result.TotalPrice = Math.Abs(fee.TotalAmount);
-            result.TotalVatAmount = Math.Abs(fee.TotalVATAmount);
+            result.TotalPrice = result.TotalPriceWithoutRounding = Math.Abs(fee.TotalAmount);
+            result.TotalVatAmount = result.TotalVatAmountWithoutRounding = Math.Abs(fee.TotalVATAmount);
             return result;
         }
 
         public static PaymentInfoRowCarrier Build(OrderDiscountCarrier discount, Guid paymentInfoID, int index)
         {
             var result = new PaymentInfoRowCarrier(discount, paymentInfoID, index);
-            result.TotalPrice = Math.Abs(discount.DiscountAmount) * -1;
-            result.TotalVatAmount = Math.Abs(discount.VATAmount) * -1;
+            result.TotalPrice = result.TotalPriceWithoutRounding = Math.Abs(discount.DiscountAmount) * -1;
+            result.TotalVatAmount = result.TotalVatAmountWithoutRounding = Math.Abs(discount.VATAmount) * -1;
             return result;
         }
     }

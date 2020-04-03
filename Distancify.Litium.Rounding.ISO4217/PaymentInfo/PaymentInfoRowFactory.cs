@@ -39,7 +39,7 @@ namespace Distancify.Litium.Rounding.ISO4217.PaymentInfo
             pi.Rows.AddRange(orderCarrier.Fees.Select(r => PaymentInfoRowBuilder.Build(r, pi.ID, index++)));
 
             var leftForDiscount = GetOrderTotal(orderCarrier);
-            foreach (var discount in orderCarrier.OrderDiscounts)
+            foreach (var discount in orderCarrier.OrderDiscounts.FindAll(item => !item.CarrierState.IsMarkedForDeleting))
             {
                 var row = PaymentInfoRowBuilder.Build(discount, pi.ID, index++);
 
@@ -47,8 +47,8 @@ namespace Distancify.Litium.Rounding.ISO4217.PaymentInfo
                 if (discount.DiscountAmount > leftForDiscount)
                 {
                     discountAmount = Math.Min(leftForDiscount, discount.DiscountAmount);
-                    row.TotalPrice = Math.Abs(discountAmount) * -1;
-                    row.TotalVatAmount = row.TotalPrice * discount.VATPercentage;
+                    row.TotalPrice = row.TotalPriceWithoutRounding = Math.Abs(discountAmount) * -1;
+                    row.TotalVatAmount = row.TotalVatAmountWithoutRounding = row.TotalPrice * discount.VATPercentage;
                 }
 
                 leftForDiscount = leftForDiscount + row.TotalPrice;
