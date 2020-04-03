@@ -44,7 +44,7 @@ It's not an add-on per se, but can rather be seen as a patch.</Description>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Litium.Setup.Complete">
-      <Version>7.2.3</Version>
+      <Version>7.4.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNet.Identity.Core" Version="2.2.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers">

@@ -50,10 +50,13 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Litium.Setup.Complete">
-      <Version>7.2.3</Version>
+      <Version>7.4.1</Version>
     </PackageReference>
     <PackageReference Include="Litium.Studio.Plugins.ECommerce.PaymentProviders.DirectPay">
-      <Version>7.2.3</Version>
+      <Version>7.4.1</Version>
+    </PackageReference>
+    <PackageReference Include="Litium.Connect.Application">
+      <Version>7.4.1</Version>
     </PackageReference>
     <PackageReference Include="Litium.Xunit.Bootstrapper">
       <Version>2.0.4</Version>
